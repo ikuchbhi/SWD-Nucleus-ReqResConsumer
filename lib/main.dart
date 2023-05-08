@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:reqres_consumer/src/common/constants.dart';
+import 'package:reqres_consumer/src/ui/users_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,11 +16,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: APP_TITLE,
       theme: ThemeData(
-        primaryColor: Colors.indigo,
+        fontFamily: 'Circular',
+        primaryColor: Colors.indigo.shade400,
         colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.amber),
         useMaterial3: true,
       ),
       darkTheme: ThemeData(
+        fontFamily: 'Circular',
         primaryColor: Colors.indigo,
         colorScheme: ColorScheme.fromSwatch().copyWith(
           secondary: Colors.amber,
@@ -53,7 +57,20 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("App", style: TextStyle(color: Colors.white)),
+        title: const Text(
+          "ReqRes Consumer",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [Colors.indigo.shade400, Colors.blue]),
+          ),
+        ),
         backgroundColor: Theme.of(context).primaryColor,
         bottom: TabBar(
           tabs: const [
@@ -70,9 +87,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       body: TabBarView(
         controller: _ctrller,
         physics: const ClampingScrollPhysics(),
-        children: const [
-          AppPage("Users"),
-          AppPage("Resources"),
+        children: [
+          UsersPage(),
+          const AppPage("Resources"),
         ],
       ),
       floatingActionButton: FloatingActionButton(

@@ -1,3 +1,9 @@
+# v0.2.0 (07May2023)
+
+Implemented Users section.
+
+* Added user info (bottom modal sheet)
+
 # v0.1.0 (06May2023)
 
 Initial commit.
