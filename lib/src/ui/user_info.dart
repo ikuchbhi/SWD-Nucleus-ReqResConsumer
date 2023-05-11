@@ -41,7 +41,7 @@ class UserInfo extends StatelessWidget {
                   right: 16.0,
                   top: 30.0 + MediaQuery.of(context).size.height * 0.03,
                 ),
-                color: Colors.grey.shade200,
+                color: Theme.of(context).cardColor,
                 height: MediaQuery.of(context).size.height * 0.35,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

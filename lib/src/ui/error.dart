@@ -7,17 +7,29 @@ class Error extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          const Icon(
-            Icons.error_outline,
-            color: Colors.red,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(
+          Icons.error_outline,
+          color: Colors.red,
+          size: 40.0,
+        ),
+        const SizedBox(
+          height: 5.0,
+        ),
+        const Text(
+          "Error",
+          style: TextStyle(fontSize: 24.0),
+        ),
+        Text(
+          error.toString(),
+          style: const TextStyle(
+            fontSize: 15.0,
           ),
-          const Text("Error"),
-          Text(error.toString()),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

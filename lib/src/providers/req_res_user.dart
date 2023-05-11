@@ -1,25 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reqres_consumer/src/models/paged_req_res_user.dart';
 
 import '../providers/req_res_user_provider.dart';
 
-import '../models/req_res_user.dart';
-
-class ReqResUsers extends StateNotifier<List<ReqResUser>> {
+class ReqResUserNotifier extends StateNotifier<PagedReqResUser> {
   final ReqResUserProvider provider;
-  int pageIndex = 0;
 
-  final List<ReqResUser> users;
-
-  ReqResUsers(this.provider)
-      : users = [],
-        super([]);
-
-  void getUsers() async {
-    final list = await provider.getUsers();
-    if (list.isNotEmpty) {
-      users.addAll(list);
-      state = list;
-    }
-    state = [];
-  }
+  ReqResUserNotifier(this.provider, {int index = 0})
+      : super(
+          PagedReqResUser(-1, []),
+        );
 }
+
+final _reqresusersprovider = Provider((_) => ReqResUserProviderImpl());
+
+final userProvider = StateNotifierProvider<ReqResUserNotifier, PagedReqResUser>(
+  (ref) => ReqResUserNotifier(
+    ref.read(_reqresusersprovider),
+  ),
+);

@@ -1,3 +1,8 @@
+# v0.3.0 (11May2023)
+
+* Fixed pagination in Users section
+* Started work on Resources section
+
 # v0.2.0 (07May2023)
 
 Implemented Users section.

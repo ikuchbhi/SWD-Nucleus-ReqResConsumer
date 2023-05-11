@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:reqres_consumer/src/models/req_res_user.dart';
 
-import 'user_info.dart';
+import '../models/req_res_resource.dart';
+import 'resource_info.dart';
 
-class UserTile extends StatefulWidget {
-  final ReqResUser user;
-  const UserTile({super.key, required this.user});
+class ResourceTile extends StatefulWidget {
+  final ReqResResource resource;
+  const ResourceTile({super.key, required this.resource});
 
   @override
-  State<UserTile> createState() => _UserTileState();
+  State<ResourceTile> createState() => _ResourceTileState();
 }
 
-class _UserTileState extends State<UserTile> {
+class _ResourceTileState extends State<ResourceTile> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 100.0,
       child: Card(
+        key: ValueKey(widget.resource),
         color: Theme.of(context).cardColor,
         elevation: 2.0,
         margin: const EdgeInsets.all(5.0),
@@ -41,12 +42,12 @@ class _UserTileState extends State<UserTile> {
                 ),
                 child: CircleAvatar(
                   radius: 30.0,
-                  foregroundImage: NetworkImage(widget.user.avatarUrl),
+                  foregroundColor: _getColor(),
                   child: const Icon(Icons.person),
                 ),
               ),
               Text(
-                "${widget.user.firstName} ${widget.user.lastName}",
+                widget.resource.name,
                 style: const TextStyle(
                   fontSize: 18.0,
                 ),
@@ -60,7 +61,7 @@ class _UserTileState extends State<UserTile> {
                 onPressed: () => showModalBottomSheet(
                   backgroundColor: Colors.transparent,
                   context: context,
-                  builder: (c) => UserInfo(user: widget.user),
+                  builder: (c) => ResourceInfo(resource: widget.resource),
                 ),
               ),
             ],
@@ -68,5 +69,10 @@ class _UserTileState extends State<UserTile> {
         ),
       ),
     );
+  }
+
+  Color _getColor() {
+    var hex = widget.resource.color.toUpperCase().replaceAll("#", "");
+    return Color(int.parse(hex, radix: 16));
   }
 }
