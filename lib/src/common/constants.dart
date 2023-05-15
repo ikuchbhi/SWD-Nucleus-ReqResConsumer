@@ -1,5 +1,7 @@
 // API
-// ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
+import 'package:flutter/material.dart';
 
 const String API_URL = "http://reqres.in/api";
 
@@ -29,3 +31,29 @@ const String API_RESOURCE_PANTONE_VALUE = "pantone_value";
 
 // App Title
 const String APP_TITLE = "SWD Nucleus Tech Team - ReqRes consumer";
+
+// App Themes
+final APP_DEFAULT_THEME = ThemeData(
+  fontFamily: 'Circular',
+  primaryColor: Colors.indigo.shade400,
+  cardColor: Colors.grey[200],
+  canvasColor: Colors.grey[400],
+  colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.amber),
+  useMaterial3: true,
+);
+
+final APP_DARK_THEME = ThemeData(
+  fontFamily: 'Circular',
+  primaryColor: Colors.indigo.shade400,
+  colorScheme: ColorScheme.fromSwatch().copyWith(
+    secondary: Colors.amber,
+    brightness: Brightness.dark,
+  ),
+  cardColor: Colors.grey[600],
+  canvasColor: Colors.blueGrey[700],
+  scaffoldBackgroundColor: Colors.grey[700],
+  useMaterial3: true,
+  iconTheme: const IconThemeData(
+    color: Colors.white,
+  ),
+);

@@ -5,7 +5,7 @@ import 'package:reqres_consumer/src/common/constants.dart';
 import 'package:reqres_consumer/src/models/api_exception.dart';
 import 'package:reqres_consumer/src/models/paged_req_res_user.dart';
 
-import '../models/req_res_user.dart';
+import '../../models/req_res_user.dart';
 
 /// An interface for [ReqResUserProvider]
 ///

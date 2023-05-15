@@ -23,7 +23,6 @@ class UserInfo extends StatelessWidget {
             children: [
               Container(
                 height: MediaQuery.of(context).size.height * 0.15,
-                // color: Colors.pink,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [

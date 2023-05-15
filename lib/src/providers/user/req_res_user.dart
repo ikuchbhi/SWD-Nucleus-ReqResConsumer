@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reqres_consumer/src/models/paged_req_res_user.dart';
 
-import '../providers/req_res_user_provider.dart';
+import 'req_res_user_provider.dart';
 
 class ReqResUserNotifier extends StateNotifier<PagedReqResUser> {
   final ReqResUserProvider provider;

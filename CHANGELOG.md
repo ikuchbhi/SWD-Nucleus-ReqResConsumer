@@ -1,3 +1,9 @@
+# v0.4.0 (15May2023)
+
+* Implemented Login Screen and login/register functionality
+* Added About Page
+* Added Pagination to Resources section (with dummy data as of now)
+
 # v0.3.0 (11May2023)
 
 * Fixed pagination in Users section

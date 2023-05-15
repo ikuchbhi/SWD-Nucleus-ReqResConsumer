@@ -20,52 +20,31 @@ class _ResourceTileState extends State<ResourceTile> {
         key: ValueKey(widget.resource),
         color: Theme.of(context).cardColor,
         elevation: 2.0,
-        margin: const EdgeInsets.all(5.0),
+        margin: const EdgeInsets.symmetric(vertical: 5.0),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(5.0),
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                height: 60.0,
-                width: 45.0,
-                margin: const EdgeInsets.only(right: 15.0),
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(35.0),
-                  ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
+              height: 110.0,
+              color: _getColor(),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text("Name: ${widget.resource.name}"),
+                Text("Year: ${widget.resource.year}"),
+                Chip(
+                  label: Text(widget.resource.pantoneValue),
                 ),
-                child: CircleAvatar(
-                  radius: 30.0,
-                  foregroundColor: _getColor(),
-                  child: const Icon(Icons.person),
-                ),
-              ),
-              Text(
-                widget.resource.name,
-                style: const TextStyle(
-                  fontSize: 18.0,
-                ),
-              ),
-              const Spacer(),
-              IconButton(
-                icon: Icon(
-                  Icons.chevron_right_outlined,
-                  color: Theme.of(context).iconTheme.color,
-                ),
-                onPressed: () => showModalBottomSheet(
-                  backgroundColor: Colors.transparent,
-                  context: context,
-                  builder: (c) => ResourceInfo(resource: widget.resource),
-                ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -73,6 +52,6 @@ class _ResourceTileState extends State<ResourceTile> {
 
   Color _getColor() {
     var hex = widget.resource.color.toUpperCase().replaceAll("#", "");
-    return Color(int.parse(hex, radix: 16));
+    return Color(int.parse("0xFF$hex"));
   }
 }

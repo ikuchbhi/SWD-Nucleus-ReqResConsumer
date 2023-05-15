@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:reqres_consumer/src/models/api_exception.dart';
 
-import '../common/constants.dart';
-import '../models/req_res_resource.dart';
+import '../../common/constants.dart';
+import '../../models/req_res_resource.dart';
 
 /// An interface for [ReqResResourceProvider]
 ///

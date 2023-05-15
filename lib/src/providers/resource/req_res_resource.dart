@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/req_res_resource.dart';
+import '../../models/req_res_resource.dart';
 import 'req_res_resource_provider.dart';
 
 class ReqResResources extends StateNotifier<List<ReqResResource?>> {
