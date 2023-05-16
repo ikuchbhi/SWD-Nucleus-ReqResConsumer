@@ -216,7 +216,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                               pwd,
                                             )
                                             .listen((u) {
-                                          print(u);
                                           if (u != null) {
                                             Navigator.pushReplacement(
                                               context,

@@ -29,6 +29,7 @@ class AboutPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
+              // Image.asset('assets/about-img-1.png'),
               CircleAvatar(
                 backgroundColor: Colors.white,
                 minRadius: 75.0,

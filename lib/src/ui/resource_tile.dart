@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../models/req_res_resource.dart';
-import 'resource_info.dart';
 
 class ResourceTile extends StatefulWidget {
   final ReqResResource resource;
@@ -37,8 +36,8 @@ class _ResourceTileState extends State<ResourceTile> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text("Name: ${widget.resource.name}"),
-                Text("Year: ${widget.resource.year}"),
+                Text(widget.resource.name),
+                Text(widget.resource.year.toString()),
                 Chip(
                   label: Text(widget.resource.pantoneValue),
                 ),

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reqres_consumer/src/models/req_res_resource.dart';
 import 'package:reqres_consumer/src/ui/resource_tile.dart';
 import '../providers/resource/req_res_resource.dart';
+import 'resource_info.dart';
 
 class ResourcesPage extends ConsumerStatefulWidget {
   const ResourcesPage({super.key});
@@ -14,72 +15,106 @@ class ResourcesPage extends ConsumerStatefulWidget {
 
 class _ResourcesPageState extends ConsumerState<ResourcesPage> {
   final CarouselController _controller = CarouselController();
+  bool isLoading = true;
+  int _current = 0;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _getData());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final resources = ref.watch(resourceProvider);
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Flexible(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Flexible(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                          ),
+                          onPressed: () => _controller.previousPage(),
+                          child: const Icon(
+                            Icons.arrow_left_sharp,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                      onPressed: () => _controller.previousPage(),
-                      child: const Icon(
-                        Icons.arrow_left_sharp,
-                        color: Colors.white,
+                      Flexible(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                          ),
+                          onPressed: () => _controller.nextPage(),
+                          child: const Icon(
+                            Icons.arrow_right_sharp,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Flexible(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                      ),
-                      onPressed: () => _controller.nextPage(),
-                      child: const Icon(
-                        Icons.arrow_right_sharp,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            CarouselSlider(
-              disableGesture: true,
-              items: List.generate(
-                10,
-                (r) => ResourceTile(
-                  resource: ReqResResource(
-                    id: r,
-                    name: r.toString(),
-                    year: r + 2000,
-                    color: "#E91E63",
-                    pantoneValue: "17-2031",
+                    ],
                   ),
                 ),
-              ),
-              options: CarouselOptions(enlargeCenterPage: true, height: 200),
-              carouselController: _controller,
+                AbsorbPointer(
+                  absorbing: true,
+                  child: CarouselSlider(
+                    disableGesture: true,
+                    items: resources
+                        .map(
+                          (r) => ResourceTile(
+                            resource: ReqResResource(
+                              id: r!.id,
+                              name: r.name,
+                              year: r.year,
+                              color: r.color,
+                              pantoneValue: r.pantoneValue,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    options: CarouselOptions(
+                      enlargeCenterPage: true,
+                      height: 200,
+                      onPageChanged: (i, _) {
+                        setState(() => _current = i);
+                      },
+                    ),
+                    carouselController: _controller,
+                  ),
+                ),
+                const Divider(),
+                ResourceInfo(resource: resources[_current]!),
+              ],
             ),
-          ],
-        ),
-      ),
     );
+  }
+
+  void _getData() async {
+    int i = 1;
+    while (i < 15) {
+      var ans = await ref.watch(resourceProvider.notifier).getResource(i);
+      if (ans == null) {
+        setState(() => isLoading = false);
+        break;
+      }
+      i++;
+    }
   }
   // );
 }

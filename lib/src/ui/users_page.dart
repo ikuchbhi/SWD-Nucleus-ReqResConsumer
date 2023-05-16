@@ -14,15 +14,16 @@ class UsersPage extends ConsumerStatefulWidget {
 }
 
 class _UsersPageState extends ConsumerState<UsersPage> {
-  final PagingController<int, PagedReqResUser> _pg = PagingController(
-    firstPageKey: 1,
-  );
+  late PagingController<int, PagedReqResUser> _pg;
 
   @override
   void initState() {
     super.initState();
+    _pg = PagingController(
+      firstPageKey: 1,
+    );
     _pg.addPageRequestListener((pageKey) {
-      _getData(pageKey);
+      if (mounted) _getData(pageKey);
     });
   }
 
@@ -31,18 +32,20 @@ class _UsersPageState extends ConsumerState<UsersPage> {
       final provider = ref.watch(userProvider.notifier).provider;
       final res = await provider.getUsers(pageKey);
       bool isEnd = res.users.length >= provider.total;
-      if (isEnd || res.users.isEmpty) {
-        _pg.value = PagingState(
-          itemList: [...(_pg.value.itemList ?? []), res],
-          nextPageKey: null,
-        );
-        // _pg.appendLastPage([res]);
-      } else {
-        _pg.value = PagingState(
-          itemList: [...(_pg.value.itemList ?? []), res],
-          nextPageKey: pageKey + 1,
-        );
-        // _pg.appendPage([res], pageKey + 1);
+      if (mounted) {
+        if (isEnd || res.users.isEmpty) {
+          _pg.value = PagingState(
+            itemList: [...(_pg.value.itemList ?? []), res],
+            nextPageKey: null,
+          );
+          // _pg.appendLastPage([res]);
+        } else {
+          _pg.value = PagingState(
+            itemList: [...(_pg.value.itemList ?? []), res],
+            nextPageKey: pageKey + 1,
+          );
+          // _pg.appendPage([res], pageKey + 1);
+        }
       }
     } catch (e) {
       _pg.error = e;
@@ -51,22 +54,32 @@ class _UsersPageState extends ConsumerState<UsersPage> {
 
   @override
   void dispose() {
+    _pg.removePageRequestListener((pageKey) {
+      if (mounted) _getData(pageKey);
+    });
     if (mounted) _pg.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return PagedListView(
-      pagingController: _pg,
-      builderDelegate: PagedChildBuilderDelegate<PagedReqResUser>(
-        animateTransitions: true,
-        transitionDuration: const Duration(milliseconds: 1250),
-        newPageErrorIndicatorBuilder: (context) => const Text(
-          "An Error Occured. Please try again later.",
+    final bright = Theme.of(context).brightness == Brightness.light;
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        PagedListView(
+          pagingController: _pg,
+          builderDelegate: PagedChildBuilderDelegate<PagedReqResUser>(
+            animateTransitions: true,
+            transitionDuration: const Duration(milliseconds: 1250),
+            newPageErrorIndicatorBuilder: (context) => const Text(
+              "An Error Occured. Please try again later.",
+            ),
+            itemBuilder: (context, item, index) => _buildItem(index),
+          ),
         ),
-        itemBuilder: (context, item, index) => _buildItem(index),
-      ),
+        _buildBottom(bright),
+      ],
     );
   }
 
@@ -115,5 +128,59 @@ class _UsersPageState extends ConsumerState<UsersPage> {
             ),
           ),
         );
-  // );
+
+  Widget _buildBottom(bool bright) => SizedBox(
+        height: 50.0,
+        child: BottomAppBar(
+          color: Colors.transparent,
+          child: Container(
+            constraints: const BoxConstraints.expand(),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: !bright
+                    ? [
+                        Colors.indigo.shade400,
+                        Colors.blue,
+                      ]
+                    : [
+                        Theme.of(context).colorScheme.secondary,
+                        Colors.deepOrange[400]!,
+                      ],
+                begin: !bright ? Alignment.bottomLeft : Alignment.bottomRight,
+                end: !bright ? Alignment.topRight : Alignment.topCenter,
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Flexible(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.65,
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(40.0),
+                        ),
+                        child: LinearProgressIndicator(
+                          value: 0.3,
+                          color: !bright
+                              ? Colors.deepOrange[400]!
+                              : Theme.of(context).primaryColor,
+                          minHeight: 11.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Text(
+                    "1/6",
+                    style: TextStyle(fontSize: 24.0),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
 }

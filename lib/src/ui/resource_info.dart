@@ -8,82 +8,78 @@ class ResourceInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.5,
-      clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(25.0),
-          topRight: Radius.circular(25.0),
+    return ListView(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.all(8.0),
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height * 0.15,
+          color: _getColor(),
         ),
-      ),
-      child: Stack(
-        children: [
-          Column(
+        Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: 8.0,
+            horizontal: 16.0,
+          ),
+          color: Theme.of(context).cardColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.15,
-                // color: Colors.pink,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.blue.shade700,
-                      Colors.indigo.shade200,
-                    ],
-                    begin: Alignment.topRight,
-                    end: Alignment.bottomCenter,
-                  ),
+              Text(
+                resource.name,
+                style: const TextStyle(
+                  fontSize: 32.0,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(
-                  left: 16.0,
-                  right: 16.0,
-                  top: 30.0 + MediaQuery.of(context).size.height * 0.03,
-                ),
-                color: Theme.of(context).cardColor,
-                height: MediaQuery.of(context).size.height * 0.35,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      resource.name,
+              const SizedBox(
+                height: 5.0,
+              ),
+              Row(
+                children: [
+                  Chip(
+                    label: Text(
+                      resource.color,
                       style: const TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 15.0,
                       ),
                     ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    Text(
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Chip(
+                    label: Text(
                       "Year: ${resource.year}",
                       style: const TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 15.0,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Chip(
+                    label: Text(
+                      resource.pantoneValue,
+                      style: const TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          Positioned(
-            left: MediaQuery.of(context).size.width * 0.075,
-            top: MediaQuery.of(context).size.height * 0.035,
-            child: CircleAvatar(
-              radius: 60.0,
-              foregroundColor: _getColor(),
-              child: const Icon(Icons.person),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Color _getColor() {
-    var hex = resource.color.toUpperCase().replaceAll("#", "");
-    return Color(int.parse(hex, radix: 16));
+    var hex = resource.color.toUpperCase().replaceAll("#", "0xFF");
+    return Color(int.parse(hex));
   }
 }

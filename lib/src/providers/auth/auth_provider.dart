@@ -16,7 +16,7 @@ abstract class AuthProvider {
 }
 
 class AuthProviderImpl implements AuthProvider {
-  FirebaseAuth _auth;
+  final FirebaseAuth _auth;
 
   AuthProviderImpl() : _auth = FirebaseAuth.instance;
 
@@ -68,8 +68,8 @@ class AuthProviderImpl implements AuthProvider {
   // Sign out
   @override
   Future<void> signOut() async {
-    GoogleSignIn().disconnect();
-    // await _auth.signOut();
+    await GoogleSignIn().disconnect();
+    await FirebaseAuth.instance.signOut();
   }
 
   @override

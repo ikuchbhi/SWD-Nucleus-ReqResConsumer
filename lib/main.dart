@@ -24,40 +24,24 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _auth = ref.read(authProvider);
     return MaterialApp(
       title: APP_TITLE,
       theme: APP_DEFAULT_THEME,
       darkTheme: APP_DARK_THEME,
       debugShowCheckedModeBanner: false,
       home: StreamBuilder<User?>(
-        stream: _auth.authProvider.firebaseAuth.authStateChanges(),
+        stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          try {
-            if (snapshot.hasData) {
-              return const MyHomePage();
-            } else if (snapshot.data == null) {
-              return const LoginPage();
-            }
-            return Container();
-          } catch (e) {
-            showDialog(
-              context: context,
-              builder: (_) {
-                return AlertDialog(
-                  actions: [
-                    TextButton(
-                      child: const Text("OK"),
-                      onPressed: () => Navigator.pop(_),
-                    ),
-                  ],
-                  content: Text(snapshot.error.toString()),
-                  title: const Text("An Error Occured"),
-                );
-              },
-            );
-            return Container();
+          if (snapshot.hasData) {
+            return const MyHomePage();
+          } else if (snapshot.data == null) {
+            return const LoginPage();
           }
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         },
       ),
     );
@@ -74,6 +58,7 @@ class MyHomePage extends ConsumerStatefulWidget {
 class _MyHomePageState extends ConsumerState<MyHomePage>
     with TickerProviderStateMixin {
   TabController? _ctrller;
+  final PageStorageBucket appBucket = PageStorageBucket();
 
   @override
   void initState() {
@@ -110,18 +95,20 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
           controller: _ctrller,
         ),
       ),
-      body: TabBarView(
-        controller: _ctrller,
-        physics: const ClampingScrollPhysics(),
-        children: const [
-          UsersPage(),
-          ResourcesPage(),
-        ],
-      ),
-      bottomNavigationBar: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: 50.0,
-        child: _buildBottomBar(bright),
+      body: PageStorage(
+        bucket: appBucket,
+        child: TabBarView(
+          controller: _ctrller,
+          physics: const ClampingScrollPhysics(),
+          children: const [
+            UsersPage(
+              key: PageStorageKey('Users'),
+            ),
+            ResourcesPage(
+              key: PageStorageKey('Resources'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -139,14 +126,21 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
         ),
         IconButton(
           onPressed: () {
-            auth.signOut().listen((u) {
-              if (u == null) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const LoginPage()),
+            auth.signOut().handleError(
+                  (e) => showDialog(
+                    context: context,
+                    builder: (c) => AlertDialog(
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(c),
+                          child: const Text("OK"),
+                        ),
+                      ],
+                      content: Text(e.toString()),
+                      title: const Text("Error"),
+                    ),
+                  ),
                 );
-              }
-            });
           },
           tooltip: "Log Out",
           icon: const Icon(Icons.output_outlined, color: Colors.white),
@@ -162,56 +156,4 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
           Theme.of(context).colorScheme.secondary,
           Colors.deepOrange[400]!,
         ];
-
-  Widget _buildBottomBar(bool bright) => BottomAppBar(
-        color: Colors.transparent,
-        child: Container(
-          constraints: const BoxConstraints.expand(),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: !bright
-                  ? [
-                      Colors.indigo.shade400,
-                      Colors.blue,
-                    ]
-                  : [
-                      Theme.of(context).colorScheme.secondary,
-                      Colors.deepOrange[400]!,
-                    ],
-              begin: !bright ? Alignment.bottomLeft : Alignment.bottomRight,
-              end: !bright ? Alignment.topRight : Alignment.topCenter,
-            ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Flexible(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.65,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(40.0),
-                      ),
-                      child: LinearProgressIndicator(
-                        value: 0.3,
-                        color: !bright
-                            ? Colors.deepOrange[400]!
-                            : Theme.of(context).primaryColor,
-                        minHeight: 11.0,
-                      ),
-                    ),
-                  ),
-                ),
-                const Text(
-                  "1/6",
-                  style: TextStyle(fontSize: 24.0),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
 }

@@ -7,58 +7,40 @@ class Auth extends StateNotifier<User?> {
 
   User? user;
 
-  Auth(this.authProvider)
-      : _auth = authProvider.firebaseAuth,
-        super(null);
-
-  final FirebaseAuth _auth;
+  Auth(this.authProvider) : super(null);
 
   Stream<User?> loginWithEmailAndPassword(
     String email,
     String password,
   ) async* {
     authProvider.loginWithEmailAndPassword(email, password);
-    yield* _auth.authStateChanges()
-      ..listen((u) {
-        if (u != null) user = u;
-      });
   }
 
   Stream<User?> loginWithGoogle() async* {
-    authProvider.loginWithGoogle();
-    yield* _auth.authStateChanges()
-      ..listen((u) {
-        if (u != null) user = u;
-      });
-    ;
+    await authProvider.loginWithGoogle();
+    yield* authProvider.firebaseAuth.authStateChanges()
+      ..listen(
+        (u) => user = u,
+      );
   }
 
   Stream<User?> signOut() async* {
-    authProvider.signOut();
-    yield* _auth.authStateChanges()
-      ..listen((u) {
-        user = u;
-      });
-    ;
+    await authProvider.signOut();
+    yield* authProvider.firebaseAuth.authStateChanges()
+      ..listen(
+        (u) => user = u,
+      );
   }
 
   Stream<User?> registerWithEmailAndPassword(
     String email,
     String password,
   ) async* {
-    authProvider.registerWithEmailAndPassword(email, password);
-    yield* _auth.authStateChanges()
-      ..listen((u) {
-        if (u != null) user = u;
-      });
+    await authProvider.registerWithEmailAndPassword(email, password);
   }
 
   Stream<User?> registerWithGoogle() async* {
-    authProvider.registerWithGoogle();
-    yield* _auth.authStateChanges()
-      ..listen((u) {
-        if (u != null) user = u;
-      });
+    await authProvider.registerWithGoogle();
   }
 }
 

@@ -1,3 +1,7 @@
+# v0.5.0 (16May2023)
+
+* Fixed Resources Page (supplies actual data)
+
 # v0.4.0 (15May2023)
 
 * Implemented Login Screen and login/register functionality
