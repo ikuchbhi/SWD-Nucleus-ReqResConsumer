@@ -1,10 +1,10 @@
-# reqres_consumer
+# reqres_consumer [Archived]
 
 A Flutter project that consumes the ReqRes API.
 
 ## ReqRes API
 
-[ReqRes API](https://www.reqres.in)
+[ReqRes API](https://reqres.in)
 
 ## App Flow
 - Login (Allows login/register via email-password and OAuth)
