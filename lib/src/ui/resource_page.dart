@@ -1,8 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reqres_consumer/src/models/req_res_resource.dart';
-import 'package:reqres_consumer/src/ui/resource_tile.dart';
+
+import '../models/req_res_resource.dart';
+import '../ui/resource_tile.dart';
 import '../providers/resource/req_res_resource.dart';
 import 'resource_info.dart';
 
@@ -22,11 +23,6 @@ class _ResourcesPageState extends ConsumerState<ResourcesPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _getData());
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override

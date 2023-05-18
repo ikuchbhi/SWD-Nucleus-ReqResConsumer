@@ -1,3 +1,9 @@
+# v0.6.0 (18May2023)
+
+* Fixed issues in Login
+* Implemented Notifications for the Users page
+* Refactored code
+
 # v0.5.0 (16May2023)
 
 * Fixed Resources Page (supplies actual data)

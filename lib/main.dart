@@ -29,8 +29,46 @@ class MyApp extends ConsumerWidget {
       theme: APP_DEFAULT_THEME,
       darkTheme: APP_DARK_THEME,
       debugShowCheckedModeBanner: false,
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case ROUTE_HOME:
+            final currentUser =
+                ref.watch(authProvider).authProvider.firebaseAuth.currentUser;
+            return currentUser != null
+                ? MaterialPageRoute(
+                    builder: (_) => const MyHomePage(),
+                  )
+                : MaterialPageRoute(
+                    builder: (_) => const LoginPage(),
+                  );
+          case ROUTE_LOGIN:
+            return MaterialPageRoute(
+              builder: (_) => const LoginPage(),
+            );
+          case ROUTE_USERS:
+            return MaterialPageRoute(
+              builder: (_) => const UsersPage(),
+            );
+          case ROUTE_RESOURCES:
+            return MaterialPageRoute(
+              builder: (_) => const ResourcesPage(),
+            );
+          case ROUTE_ABOUT:
+            return MaterialPageRoute(
+              builder: (_) => const AboutPage(),
+            );
+          default:
+            return MaterialPageRoute(
+              builder: (_) => const LoginPage(),
+            );
+        }
+      },
       home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
+        stream: ref
+            .watch(authProvider)
+            .authProvider
+            .firebaseAuth
+            .authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return const MyHomePage();
@@ -73,7 +111,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "ReqRes Consumer",
+          APP_NAME,
           style: TextStyle(
             color: Colors.white,
           ),
@@ -91,7 +129,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
         bottom: TabBar(
           indicatorColor: !bright ? Colors.white : Colors.grey[800],
           indicatorWeight: 4.0,
-          tabs: const [Tab(text: "Users"), Tab(text: "Resources")],
+          tabs: const [Tab(text: USERS_TAB), Tab(text: RESOURCES_TAB)],
           controller: _ctrller,
         ),
       ),
@@ -102,10 +140,10 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
           physics: const ClampingScrollPhysics(),
           children: const [
             UsersPage(
-              key: PageStorageKey('Users'),
+              key: PageStorageKey(USERS_TAB),
             ),
             ResourcesPage(
-              key: PageStorageKey('Resources'),
+              key: PageStorageKey(RESOURCES_TAB),
             ),
           ],
         ),
@@ -115,7 +153,7 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
 
   List<Widget> _buildActions(Auth auth) => [
         IconButton(
-          tooltip: "About",
+          tooltip: ABOUT_TOOLTIP,
           onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
@@ -126,23 +164,24 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
         ),
         IconButton(
           onPressed: () {
-            auth.signOut().handleError(
-                  (e) => showDialog(
-                    context: context,
-                    builder: (c) => AlertDialog(
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(c),
-                          child: const Text("OK"),
-                        ),
-                      ],
-                      content: Text(e.toString()),
-                      title: const Text("Error"),
+            final users = auth.signOut();
+            users.handleError(
+              (e) => showDialog(
+                context: context,
+                builder: (c) => AlertDialog(
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(c),
+                      child: const Text(OK_BUTTON),
                     ),
-                  ),
-                );
+                  ],
+                  content: Text(e.toString()),
+                  title: const Text(ERROR_BUTTON),
+                ),
+              ),
+            );
           },
-          tooltip: "Log Out",
+          tooltip: LOGOUT_TOOLTIP,
           icon: const Icon(Icons.output_outlined, color: Colors.white),
         ),
       ];

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../common/constants.dart';
+
 typedef SignInCallback = void Function();
 
 class GoogleSignInButton extends StatelessWidget {
@@ -28,11 +30,11 @@ class GoogleSignInButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/google-logo.png', width: 24.0, height: 24.0),
+          Image.asset(GOOGLE_LOGO_ASSET, width: 24.0, height: 24.0),
           MaterialButton(
             onPressed: onPressed,
             child: Text(
-              loginState ? "Sign in with Google" : "Continue with Google",
+              loginState ? SIGN_IN_WITH_GOOGLE : CONTINUE_WITH_GOOGLE,
               style: const TextStyle(
                 color: Colors.grey,
                 fontWeight: FontWeight.w700,

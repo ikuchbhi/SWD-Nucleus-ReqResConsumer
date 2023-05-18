@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../common/constants.dart';
 
 class Error extends StatelessWidget {
   final Object error;
@@ -20,7 +21,7 @@ class Error extends StatelessWidget {
           height: 5.0,
         ),
         const Text(
-          "Error",
+          ERROR_BUTTON,
           style: TextStyle(fontSize: 24.0),
         ),
         Text(

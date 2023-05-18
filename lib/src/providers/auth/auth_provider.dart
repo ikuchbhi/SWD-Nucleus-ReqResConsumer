@@ -69,7 +69,7 @@ class AuthProviderImpl implements AuthProvider {
   @override
   Future<void> signOut() async {
     await GoogleSignIn().disconnect();
-    await FirebaseAuth.instance.signOut();
+    await _auth.signOut().then((value) => print("signout"));
   }
 
   @override

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:reqres_consumer/src/models/req_res_user.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../models/req_res_user.dart';
+import '../providers/notifications/notification_provider.dart';
 import 'user_info.dart';
 
-class UserTile extends StatefulWidget {
+class UserTile extends ConsumerStatefulWidget {
   final ReqResUser user;
-  const UserTile({super.key, required this.user});
+  final int? id;
+  const UserTile({super.key, required this.user, this.id});
 
   @override
-  State<UserTile> createState() => _UserTileState();
+  ConsumerState<UserTile> createState() => _UserTileState();
 }
 
-class _UserTileState extends State<UserTile> {
+class _UserTileState extends ConsumerState<UserTile> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -57,11 +60,14 @@ class _UserTileState extends State<UserTile> {
                   Icons.chevron_right_outlined,
                   color: Theme.of(context).iconTheme.color,
                 ),
-                onPressed: () => showModalBottomSheet(
-                  backgroundColor: Colors.transparent,
-                  context: context,
-                  builder: (c) => UserInfo(user: widget.user),
-                ),
+                onPressed: () {
+                  ref.read(notifProvider).showNotification(widget.user);
+                  showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (c) => UserInfo(user: widget.user),
+                  );
+                },
               ),
             ],
           ),
@@ -69,4 +75,10 @@ class _UserTileState extends State<UserTile> {
       ),
     );
   }
+
+  void showUserInfo(ReqResUser user) => showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (c) => UserInfo(user: user),
+      );
 }

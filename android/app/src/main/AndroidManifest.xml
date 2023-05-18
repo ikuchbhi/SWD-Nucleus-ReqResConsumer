@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.swd_techteam_flutter_project">
    <application
-        android:label="swd_techteam_flutter_project"
+        android:label="ReqRes Consumer"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

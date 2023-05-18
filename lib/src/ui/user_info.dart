@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../common/constants.dart';
 import '../models/req_res_user.dart';
 
 class UserInfo extends StatelessWidget {
@@ -25,10 +26,7 @@ class UserInfo extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.15,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      Colors.blue.shade700,
-                      Colors.indigo.shade200,
-                    ],
+                    colors: userInfoThemes[user.id % 4]!,
                     begin: Alignment.topRight,
                     end: Alignment.bottomCenter,
                   ),

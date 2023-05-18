@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:reqres_consumer/src/ui/user_info.dart';
 
+import '../common/constants.dart';
 import '../models/paged_req_res_user.dart';
+import '../models/req_res_user.dart';
 import '../providers/providers.dart';
 import '../ui/user_tile.dart';
 
@@ -38,13 +41,11 @@ class _UsersPageState extends ConsumerState<UsersPage> {
             itemList: [...(_pg.value.itemList ?? []), res],
             nextPageKey: null,
           );
-          // _pg.appendLastPage([res]);
         } else {
           _pg.value = PagingState(
             itemList: [...(_pg.value.itemList ?? []), res],
             nextPageKey: pageKey + 1,
           );
-          // _pg.appendPage([res], pageKey + 1);
         }
       }
     } catch (e) {
@@ -63,7 +64,6 @@ class _UsersPageState extends ConsumerState<UsersPage> {
 
   @override
   Widget build(BuildContext context) {
-    final bright = Theme.of(context).brightness == Brightness.light;
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
@@ -73,12 +73,24 @@ class _UsersPageState extends ConsumerState<UsersPage> {
             animateTransitions: true,
             transitionDuration: const Duration(milliseconds: 1250),
             newPageErrorIndicatorBuilder: (context) => const Text(
-              "An Error Occured. Please try again later.",
+              USERS_ERROR_TEXT,
+            ),
+            firstPageErrorIndicatorBuilder: (context) => Center(
+              child: Column(
+                children: [
+                  const Icon(Icons.error, size: 25.0),
+                  const Text(ERROR_BUTTON),
+                  ElevatedButton.icon(
+                    onPressed: () => ref.refresh(userProvider),
+                    icon: const Icon(Icons.refresh),
+                    label: const Text(USERS_REFRESH_TEXT),
+                  ),
+                ],
+              ),
             ),
             itemBuilder: (context, item, index) => _buildItem(index),
           ),
         ),
-        _buildBottom(bright),
       ],
     );
   }
@@ -121,66 +133,11 @@ class _UsersPageState extends ConsumerState<UsersPage> {
               child: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
-                  "No more Users found.",
+                  USERS_NOT_FOUND,
                   style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
           ),
         );
-
-  Widget _buildBottom(bool bright) => SizedBox(
-        height: 50.0,
-        child: BottomAppBar(
-          color: Colors.transparent,
-          child: Container(
-            constraints: const BoxConstraints.expand(),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: !bright
-                    ? [
-                        Colors.indigo.shade400,
-                        Colors.blue,
-                      ]
-                    : [
-                        Theme.of(context).colorScheme.secondary,
-                        Colors.deepOrange[400]!,
-                      ],
-                begin: !bright ? Alignment.bottomLeft : Alignment.bottomRight,
-                end: !bright ? Alignment.topRight : Alignment.topCenter,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Flexible(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.65,
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(40.0),
-                        ),
-                        child: LinearProgressIndicator(
-                          value: 0.3,
-                          color: !bright
-                              ? Colors.deepOrange[400]!
-                              : Theme.of(context).primaryColor,
-                          minHeight: 11.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Text(
-                    "1/6",
-                    style: TextStyle(fontSize: 24.0),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
 }

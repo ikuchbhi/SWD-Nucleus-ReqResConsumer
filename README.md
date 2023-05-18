@@ -1,16 +1,19 @@
 # reqres_consumer
 
-A new Flutter project.
+A Flutter project that consumes the ReqRes API.
 
-## Getting Started
+## ReqRes API
 
-This project is a starting point for a Flutter application.
+[ReqRes API](https://www.reqres.in)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## App Flow
+- Login (Allows login/register via email-password and OAuth)
+- Main Page (Shows Users, Resources, About and a button to Logout)
+- Users
+    1. Fetches users from the api
+    1. Clicking on the user shows an info page along with a notification
+- Resources
+    1. Fetches resources from the api
+    1. Shows resources via a carousel (with an info widget below the current resource)
+- About (A little about the developer :))
+- Logout (Logs out)

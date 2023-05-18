@@ -5,8 +5,6 @@ import 'auth_provider.dart';
 class Auth extends StateNotifier<User?> {
   final AuthProvider authProvider;
 
-  User? user;
-
   Auth(this.authProvider) : super(null);
 
   Stream<User?> loginWithEmailAndPassword(
@@ -20,7 +18,7 @@ class Auth extends StateNotifier<User?> {
     await authProvider.loginWithGoogle();
     yield* authProvider.firebaseAuth.authStateChanges()
       ..listen(
-        (u) => user = u,
+        (u) => state = u,
       );
   }
 
@@ -28,7 +26,7 @@ class Auth extends StateNotifier<User?> {
     await authProvider.signOut();
     yield* authProvider.firebaseAuth.authStateChanges()
       ..listen(
-        (u) => user = u,
+        (u) => state = u,
       );
   }
 

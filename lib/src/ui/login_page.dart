@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../main.dart';
+import '../common/constants.dart';
 import '../providers/auth/auth.dart';
 import '../ui/google_signin_button.dart';
 import '../models/tab_state.dart';
@@ -70,7 +71,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           child: CustomSlidingSegmentedControl<TabState>(
                             children: {
                               TabState.login: Text(
-                                "Login",
+                                LOGIN_TEXT,
                                 style: TextStyle(
                                   color: _controller.value == TabState.login
                                       ? Colors.white
@@ -78,7 +79,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 ),
                               ),
                               TabState.register: Text(
-                                "Register",
+                                REGISTER_TEXT,
                                 style: TextStyle(
                                   color: _controller.value == TabState.register
                                       ? Colors.white
@@ -117,7 +118,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 leading: const Center(
                                   widthFactor: 1.0,
                                   child: Text(
-                                    "Email: ",
+                                    EMAIL_TEXT,
                                     style: TextStyle(
                                       color: Colors.black,
                                     ),
@@ -147,7 +148,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 leading: const Center(
                                   widthFactor: 1.0,
                                   child: Text(
-                                    "Password: ",
+                                    PASSWORD_TEXT,
                                     style: TextStyle(
                                       color: Colors.black,
                                     ),
@@ -159,10 +160,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   validator: (v) {
                                     if (v?.isNotEmpty ?? false) {
                                       if (v!.length < 5) {
-                                        return "Password too short";
+                                        return PASSWORD_TOO_SHORT;
                                       }
                                     } else {
-                                      return "Empty Password";
+                                      return PASSWORD_EMPTY;
                                     }
                                     return null;
                                   },
@@ -236,8 +237,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     ),
                                     child: Text(
                                       _controller.value == TabState.login
-                                          ? "Login"
-                                          : "Register",
+                                          ? LOGIN_TEXT
+                                          : REGISTER_TEXT,
                                       style: const TextStyle(
                                         fontSize: 18.0,
                                         color: Colors.white,
@@ -300,7 +301,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
-                              "ReqRes Consumer",
+                              APP_NAME,
                               style: TextStyle(
                                 color: Colors.white,
                               ),

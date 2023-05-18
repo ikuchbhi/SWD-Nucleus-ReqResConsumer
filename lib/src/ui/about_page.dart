@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../common/constants.dart';
+
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
 
@@ -9,7 +11,7 @@ class AboutPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "About",
+          ABOUT_TOOLTIP,
           style: TextStyle(color: Colors.white),
         ),
         flexibleSpace: Container(
@@ -29,21 +31,20 @@ class AboutPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              // Image.asset('assets/about-img-1.png'),
               CircleAvatar(
                 backgroundColor: Colors.white,
                 minRadius: 75.0,
                 maxRadius: 80.0,
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
-                  backgroundImage: AssetImage('assets/about-img.png'),
+                  backgroundImage: AssetImage(ABOUT_ME_ASSET),
                   minRadius: 70.0,
                   maxRadius: 75.0,
                 ),
               ),
               SizedBox(height: 40.0),
               Text(
-                """ Hello! I am Aman Ranjan, a first-year student pursuing CSE at BITS Pilani, Hyderabad Campus. I hail from Patna, Bihar but currently live in Navi Mumbai, Maharashtra. I am keenly interested in programming, music, and in general, learning new things. Solving puzzles is also an occasional pastime for me. """,
+                ABOUT_ME_TEXT,
                 textAlign: TextAlign.center,
               ),
             ],
