@@ -163,8 +163,8 @@ class _MyHomePageState extends ConsumerState<MyHomePage>
           icon: const Icon(Icons.info_outline, color: Colors.white),
         ),
         IconButton(
-          onPressed: () {
-            final users = auth.signOut();
+          onPressed: () async {
+            final users = await auth.signOut();
             users.handleError(
               (e) => showDialog(
                 context: context,

@@ -1,3 +1,8 @@
+# v0.6.1 (23May2023)
+
+* Attempted to fix logout issue
+* Latest Flutter UI 
+
 # v0.6.0 (18May2023)
 
 * Fixed issues in Login

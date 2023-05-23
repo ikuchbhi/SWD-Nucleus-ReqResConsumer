@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:reqres_consumer/src/ui/user_info.dart';
 
 import '../common/constants.dart';
 import '../models/paged_req_res_user.dart';
-import '../models/req_res_user.dart';
 import '../providers/providers.dart';
 import '../ui/user_tile.dart';
 
@@ -129,7 +127,7 @@ class _UsersPageState extends ConsumerState<UsersPage> {
           padding: const EdgeInsets.only(bottom: 24.0, top: 16.0),
           child: Center(
             child: Card(
-              color: Theme.of(context).errorColor,
+              color: Theme.of(context).colorScheme.error,
               child: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(

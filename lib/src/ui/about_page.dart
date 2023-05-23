@@ -24,13 +24,13 @@ class AboutPage extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
+      body: const Padding(
+        padding: EdgeInsets.all(24.0),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
+            children: [
               CircleAvatar(
                 backgroundColor: Colors.white,
                 minRadius: 75.0,

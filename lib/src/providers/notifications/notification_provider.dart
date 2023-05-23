@@ -1,5 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flutter/material.dart' show Colors, GlobalKey, NavigatorState;
+import 'package:flutter/material.dart' show Colors;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../common/constants.dart';
